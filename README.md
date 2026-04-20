@@ -4,6 +4,8 @@ Read in PGM (Portable Gray Map) -> compress -> encrypt
 
 Workflow
 - Main.c (calls other functions)
-- Compression.c
-- Encrypt/Decrypt.c 
-- Functions.h (main functions of compress and encrypt)
+- Compression.c (Handles both compression and decompression)
+- Encryption.c (Handles both encryption and decryption)
+- Main.h
+- Compresssion.h
+- Encryption.h
