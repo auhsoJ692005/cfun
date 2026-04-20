@@ -1,0 +1,1 @@
+void encrypt(unsigned char* data, int size, unsigned char key);
