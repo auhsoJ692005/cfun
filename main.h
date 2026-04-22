@@ -1,5 +1,5 @@
 /*====================
-* read_pgm
+* read_pgm (Elouise)
 * ====================
 * Reads a grayscale PGM to memory
 * 
@@ -12,7 +12,7 @@
 unsigned char* read_pgm(const char* filename, int* width, int* height);
 
 /*====================
-* write_pgm
+* write_pgm (Elouise)
 * ====================
 * Writes a grayscale image to a PGM file
 * 

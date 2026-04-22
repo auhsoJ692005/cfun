@@ -1,5 +1,5 @@
 /*====================
-* compress
+* compress (Adam)
 * ====================
 * Compresses grayscale image data using RLE (Run Length Encoding)
 * 
@@ -12,7 +12,7 @@
 int compress(unsigned char* input, int input_size, unsigned char* output);
 
 /*====================
-* decompress
+* decompress (Adam)
 * ====================
 * Decompresses RLE data back into pixel values
 * 

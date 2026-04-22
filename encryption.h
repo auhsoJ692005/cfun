@@ -1,5 +1,5 @@
 /*====================
-* encrypt
+* encrypt (Josh)
 * ====================
 * Encrypts grayscale image using XOR cipher (Possibly)
 * 
@@ -12,7 +12,7 @@
 void encrypt(unsigned char* data, int size, unsigned char key);
 
 /*====================
-* decrypt
+* decrypt (Josh)
 * ====================
 * decrypts XOR encrypted data back to original (Possibly)
 * 
