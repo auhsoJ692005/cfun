@@ -1,4 +1,4 @@
-# cfun
+# C Fund Project 
 
 Read in PGM (Portable Gray Map) -> compress -> encrypt
 
