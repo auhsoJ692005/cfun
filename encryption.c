@@ -3,8 +3,20 @@
 #include <stdlib.h>
 #include <time.h>
 
-void XOR_cipher(unsigned char* data, int size, unsigned char key)
+void XOR_cipher_encrypt(unsigned char* data, int size, unsigned char key)
 {
+    int i;
+    for (i = 0; i < size; i++)
+    {
+        data[i] ^= key;   /* XOR with the single-byte key */
+    }
+}
+
+void XOR_cipher_decrypt(unsigned char* data, int size)
+{
+    unsigned char key;
+    printf("Input key: ");
+    scanf("%hhu", &key);
     int i;
     for (i = 0; i < size; i++)
     {
@@ -34,17 +46,17 @@ int main()
     int size = sizeof(message) / sizeof(message[0]);
     unsigned char key = key_gen();
 
-    printf("Original (decimal): ");
+    printf("Original: ");
     print_decimal(message, size);
 
     printf("Key: %hhu\n", key);
 
-    XOR_cipher(message, size, key);
-    printf("Encrypted (decimal): ");
+    XOR_cipher_encrypt(message, size, key);
+    printf("Encrypted: ");
     print_decimal(message, size);
 
-    XOR_cipher(message, size, key);
-    printf("Decrypted (decimal): ");
+    XOR_cipher_decrypt(message, size);
+    printf("Decrypted: ");
     print_decimal(message, size);
 
     return 0;
