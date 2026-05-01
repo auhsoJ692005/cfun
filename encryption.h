@@ -21,4 +21,4 @@ void XOR_cipher_encrypt(unsigned char* data, int size, unsigned char key);
 *
 * returns void
 */
-void XOR_cipher_decrypt(unsigned char* data, int size)
+void XOR_cipher_decrypt(unsigned char* data, int size);
