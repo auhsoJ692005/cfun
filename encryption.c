@@ -24,6 +24,12 @@ void XOR_cipher_decrypt(unsigned char* data, int size)
     }
 }
 
+unsigned char key_gen()
+{
+    srand(time(NULL));
+    return (rand() % (256));
+}
+
 static void print_decimal(const unsigned char *data, int size)
 {
     int i;
@@ -34,12 +40,7 @@ static void print_decimal(const unsigned char *data, int size)
     printf("\n");
 }
 
-static unsigned char key_gen()
-{
-    srand(time(NULL));
-    return (rand() % (256));
-}
-
+/*
 int main()
 {
     unsigned char message[] = {0, 100, 200, 150, 25, 33};
@@ -61,3 +62,4 @@ int main()
 
     return 0;
 }
+*/
