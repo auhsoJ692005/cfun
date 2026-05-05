@@ -108,11 +108,14 @@ int main()
 
     int size = w * h;
 
+    printf("Original size: %d\n", size);
+
     /* Compress */
     unsigned char* compressed = malloc(size * 2);
     int compressed_size = compress(img, size, compressed);
 
     print_pixels("Compressed first 20: ", compressed, 20);
+    printf("Compressed size: %d\n", compressed_size);
 
     /* Encrypt */
     unsigned char key = key_gen();
