@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "compression.h"
+#include "encryption.h"
 
 /*====================
 * read_pgm (Elouise)
@@ -83,17 +85,39 @@ int write_pgm(const char* filename, unsigned char* data, int* width, int* height
     return 0;
 }
 
+void print_pixels(const char* label, unsigned char* data, int n)
+{
+    printf("%s: ", label);
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", data[i]);
+    }
+    printf("\n");
+}
+
 int main()
 {
+    /* Read in File */
     int w, h;
     char filename[] = "dataset/0.pgm";
 
     unsigned char* img = read_pgm(filename, &w, &h);
 
     /* Check first 0 pixels */
-    printf("First 20 pixels of PGM: ");
-    for (int i = 0; i < 20; i++) {
-        printf("%d ", img[i]);
-    }
-    printf("\n");
+    print_pixels("Original first 20: ", img, 20);
+
+    int size = w * h;
+
+    /* Compress */
+    unsigned char* compressed = malloc(size * 2);
+    int compressed_size = compress(img, size, compressed);
+
+    print_pixels("Compressed first 20: ", compressed, 20);
+
+    /* Encrypt */
+    unsigned char key = key_gen();
+    printf("key: %hhu\n", key);
+    XOR_cipher_encrypt(compressed, compressed_size, key);
+
+    print_pixels("Encrypted first 20: ", compressed, 20);
 }
