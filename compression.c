@@ -1,6 +1,6 @@
 int compress(unsigned char* input, int input_size, unsigned char* output);
 int decompress(unsigned char* input, int input_size, unsigned char* output);
-/* Do we need to decompress? */
+
 
 int main()
 {
