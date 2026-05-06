@@ -12,6 +12,7 @@
 unsigned char* read_pgm(const char* filename, int* width, int* height)
 {
     return 0;
+    
 }
 
 /*====================
