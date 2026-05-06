@@ -9,7 +9,7 @@
 *
 * returns number of elements written to output buffer
 */
-int compress(unsigned char* input, int input_size, unsigned char* output);
+int compress(unsigned char* input, int input_size, unsigned char* output, int output_size);
 
 /*====================
 * decompress (Adam)

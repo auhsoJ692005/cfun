@@ -1,13 +1,16 @@
 int compress(unsigned char* input, int input_size, unsigned char* output, int output_size){
     int out_index = 0;
     int i = 0;
+    /* iterates through input data */
     while (i < input_size && out_index < output_size - 1) {
-        unsigned char current_value = input[i];
+        unsigned char current = input[i];
         int run_length = 1;
-        while (i + run_length < input_size && input[i + run_length] == current_value && run_length < 255) {
+        /*continues counting consecutive identical pixels */
+        while (i + run_length < input_size && input[i + run_length] == current && run_length < 255) {
             run_length++;
         }
-        output[out_index++] = current_value;
+        /* store run-length encoded data */
+        output[out_index++] = current;
         output[out_index++] = run_length;
         i += run_length;
     }
@@ -17,19 +20,22 @@ int compress(unsigned char* input, int input_size, unsigned char* output, int ou
 int decompress(unsigned char* input, int input_size, unsigned char* output, int output_size) {
     int out_index = 0;
     int i = 0;
+    int j;
+    /* iterates through compressed data */
     while (i < input_size && out_index < output_size) {
         unsigned char value = input[i++];
         int run_length = input[i++];
-        for (int j = 0; j < run_length; j++) {
-            output[out_index++] = value;
+        for (j = 0; j < run_length; j++) {
+            output[out_index++] = value; /* expands run-length encoded data */
+             
         }
     }
     return out_index;
 }
-
+/*
 int main()
 {
-    printf("Compression and Decompression Test\n");
+  
     unsigned char data[] = {0, 0, 0, 255, 255, 128, 128, 128, 128};
     int data_size = sizeof(data) / sizeof(data[0]);
     unsigned char compressed[20];
@@ -43,4 +49,4 @@ int main()
     printf("Decompressed size: %d\n", decompressed_size);
 
     return 0;
-}
+} */
