@@ -249,9 +249,9 @@ int main()
                 
                 print_pixels("Original first 20: ", img, 20); /*Value of the first 20 pixels*/
 
-               size = w * h; 
+                size = w * h; 
                 
-                printf("Image loaded successfully");
+                printf("Image loaded successfully\n");
                 printf("Original size %d x %d = %d pixels\n", w, h, size);
 
                 break;
@@ -294,6 +294,19 @@ int main()
                     printf("Error: No compressed data. Please run compression first (option 3).\n");
                     break;
                 }
+
+                char confirm;
+
+                if (encryption_method_used != 0) {
+                printf("WARNING: Data is already encrypted!\n");
+                printf("Encrypting again will permanently corrupt it.\n");
+                printf("Are you sure? (y/n): ");
+                scanf(" %c", &confirm);   /* space before %c to skip newline */
+                if (confirm != 'y' && confirm != 'Y') {
+                    printf("Encryption cancelled.\n");
+                    break;
+                }
+            }
 
                 printf("Choose encryption method:\n");
                 printf("1. XOR cipher (single-byte key)\n");
