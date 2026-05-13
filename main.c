@@ -137,6 +137,7 @@ size_t pixel_index = 0;
             return NULL;
         }
     pixel_array[pixel_index] = (unsigned char)v;
+    pixel_index++;
     } 
 }
 
@@ -215,6 +216,16 @@ int main()
 
     int input;
     int running = 0;
+    int w = 0;
+    int h = 0; 
+    int size = 0;
+    unsigned char* img = NULL;
+    unsigned char* compressed = NULL;
+    int compressed_size = 0;
+    unsigned char* decompressed = NULL;
+    int decompressed_size = 0;
+    int enc_choice = 0;
+    int encryption_method_used = 0;
 
     while (running == 0)
     {
@@ -223,49 +234,114 @@ int main()
         switch (input)
         {
             case 1:
-                /* Requires implementation */
-            
                 /* Read PGM */
-                int w, h;
-                char filename[] = "dataset/0.pgm";
+                char filename[150];
 
-                unsigned char* img = read_pgm(filename, &w, &h);
+                printf("Enter input image filename: ");
+                scanf("%149s", filename);
 
-                /* Check first 0 pixels */
-                print_pixels("Original first 20: ", img, 20);
+               img = read_pgm(filename, &w, &h);/*Loads image into memory*/
 
-                int size = w * h;
+                if (img == NULL) {
+                    printf("Error! Image failed to load.\n");
+                    break;
+                }
+                
+                print_pixels("Original first 20: ", img, 20); /*Value of the first 20 pixels*/
 
-                printf("Original size: %d\n", size);
+               size = w * h; 
+                
+                printf("Image loaded successfully");
+                printf("Original size %d x %d = %d pixels\n", w, h, size);
+
                 break;
             case 2:
-                /* Requires implementation */
-                /* write_pgm(); */
+                /* Write PGM */
+                char save_file[150]; /*149 characters can be stored*/
+
+                if (img == NULL){ /*Checks if image was loaded*/
+                    printf("Error! Image was not loaded.\n");
+                    break; 
+                }
+
+                printf("Enter output image filename: ");
+                scanf("%149s", save_file);
+
+                if (write_pgm(save_file, img, &w, &h) == 0){ /*Calls write_pgm() to save the file*/
+                    printf("Success! Image saved.\n");
+                } else {
+                    printf("Error! Image unsucessfully saved.\n");
+                }
                 break;
             case 3:
                 /* Compress */
-                unsigned char* compressed = malloc(size * 2);
-                int compressed_size = compress(img, size, compressed);
+                compressed = malloc(size * 2);
+                compressed_size = compress(img, size, compressed, sizeof(compressed));
 
                 print_pixels("Compressed first 20: ", compressed, 20);
                 printf("Compressed size: %d\n", compressed_size);
                 break;
             case 4:
-                /* Requires implementation */
-                /* decompress(); */
+                /* Decompress */
+                decompressed = malloc(size * 2);
+                decompressed_size = decompress(compressed, compressed_size, decompressed, sizeof(decompressed));
+                print_pixels("Decompressed first 20: ", decompressed, 20);
+                printf("Decompressed size: %d\n", decompressed_size);
                 break;
             case 5:
-                /* Encrypt */
-                unsigned char key = key_gen();
-                printf("key: %hhu\n", key);
-                XOR_cipher_encrypt(compressed, compressed_size, key);
+                /* Encrypt – requires compression first */
+                if (compressed == NULL) {
+                    printf("Error: No compressed data. Please run compression first (option 3).\n");
+                    break;
+                }
 
-                print_pixels("Encrypted first 20: ", compressed, 20);
+                printf("Choose encryption method:\n");
+                printf("1. XOR cipher (single-byte key)\n");
+                printf("2. Second method (placeholder)\n");
+                scanf("%d", &enc_choice);
+
+                switch (enc_choice) {
+                    case 1:
+                        unsigned char key = key_gen();
+                        printf("Generated XOR key: %hhu\n", key);
+                        XOR_cipher_encrypt(compressed, compressed_size, key);
+                        encryption_method_used = 1;
+                        printf("Encryption (XOR) completed.\n");
+                        print_pixels("Encrypted first 20: ", compressed, 20);
+                        break;
+                    case 2:
+                        printf("Second encryption method not yet implemented.\n");
+                        /* call your_second_encrypt(compressed, compressed_size); */
+                        encryption_method_used = 2;
+                        break;
+                    default:
+                        printf("Invalid encryption choice.\n");
+                }
                 break;
-            case 6:
-                XOR_cipher_decrypt(compressed, compressed_size);
 
-                print_pixels("Decrypted first 20: ", compressed, 20);
+            case 6:
+                /* Decrypt – automatically uses the method that was stored */
+                if (compressed == NULL) {
+                    printf("Error: No data to decrypt. Load/compress/encrypt first.\n");
+                    break;
+                }
+                if (encryption_method_used == 0) {
+                    printf("Error: No encryption method was used. Please encrypt first (option 5).\n");
+                    break;
+                }
+
+                switch (encryption_method_used) {
+                    case 1:
+                        XOR_cipher_decrypt(compressed, compressed_size);
+                        print_pixels("Decrypted first 20: ", compressed, 20);
+                        break;
+                    case 2:
+                        printf("Second decryption method not yet implemented.\n");
+                        /* second_decrypt(compressed, compressed_size); */
+                        break;
+                    default:
+                        printf("Unknown encryption method.\n");
+                }
                 break;
             case 7:
                 printf("Thank you for using our service! Have a good day!\n");
@@ -276,7 +352,9 @@ int main()
         }
     }
 
-    
+    if (img) free(img);
+    if (compressed) free(compressed);
+    if (decompressed) free(decompressed);
 
-
+    return 0;
 }
