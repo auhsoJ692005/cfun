@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-void XOR_cipher_encrypt(unsigned char* data, int size, unsigned char key)
+void XOR_cipher_crypt(unsigned char* data, int size, unsigned char key)
 {
     int i;
     for (i = 0; i < size; i++)
@@ -12,15 +12,28 @@ void XOR_cipher_encrypt(unsigned char* data, int size, unsigned char key)
     }
 }
 
-void XOR_cipher_decrypt(unsigned char* data, int size)
+void rc4_crypt(unsigned char *data, int size, const unsigned char *key, int key_len)
 {
-    unsigned char key;
-    printf("Input key: ");
-    scanf("%hhu", &key);
-    int i;
-    for (i = 0; i < size; i++)
-    {
-        data[i] ^= key;   /* XOR with the single-byte key */
+    unsigned char S[256];
+    int i, j, k;
+    unsigned char tmp;
+
+    /* Initialise S‑box */
+    for (k = 0; k < 256; k++)
+        S[k] = (unsigned char)k;
+    j = 0;
+    for (k = 0; k < 256; k++) {
+        j = (j + S[k] + key[k % key_len]) % 256;
+        tmp = S[k]; S[k] = S[j]; S[j] = tmp;
+    }
+    i = 0; j = 0;
+
+    /* Generate keystream and XOR */
+    for (k = 0; k < size; k++) {
+        i = (i + 1) % 256;
+        j = (j + S[i]) % 256;
+        tmp = S[i]; S[i] = S[j]; S[j] = tmp;
+        data[k] ^= S[(S[i] + S[j]) % 256];
     }
 }
 
