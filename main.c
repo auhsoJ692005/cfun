@@ -226,6 +226,10 @@ int main()
     int decompressed_size = 0;
     int enc_choice = 0;
     int encryption_method_used = 0;
+    unsigned char rc4_key[256];
+    int rc4_key_len;
+    char password[256];
+    unsigned char key;
 
     while (running == 0)
     {
@@ -309,23 +313,31 @@ int main()
             }
 
                 printf("Choose encryption method:\n");
-                printf("1. XOR cipher (single-byte key)\n");
-                printf("2. Second method (placeholder)\n");
+                printf("1. XOR cipher\n");
+                printf("2. RC4 cipher\n");
                 scanf("%d", &enc_choice);
 
                 switch (enc_choice) {
                     case 1:
-                        unsigned char key = key_gen();
+                        key = key_gen();
                         printf("Generated XOR key: %hhu\n", key);
-                        XOR_cipher_encrypt(compressed, compressed_size, key);
+                        XOR_cipher_crypt(compressed, compressed_size, key);
                         encryption_method_used = 1;
                         printf("Encryption (XOR) completed.\n");
                         print_pixels("Encrypted first 20: ", compressed, 20);
                         break;
                     case 2:
-                        printf("Second encryption method not yet implemented.\n");
-                        /* call your_second_encrypt(compressed, compressed_size); */
+                        printf("Enter a password (up to 255 characters): ");
+                        scanf("%255s", password);
+                        rc4_key_len = 0;
+                        while (password[rc4_key_len] != '\0') {
+                            rc4_key[rc4_key_len] = (unsigned char)password[rc4_key_len];
+                            rc4_key_len++;
+                        }
+                        rc4_crypt(compressed, compressed_size, rc4_key, rc4_key_len);
                         encryption_method_used = 2;
+                        printf("Encryption (RC4) completed.\n");
+                        print_pixels("Encrypted first 20: ", compressed, 20);
                         break;
                     default:
                         printf("Invalid encryption choice.\n");
@@ -345,12 +357,26 @@ int main()
 
                 switch (encryption_method_used) {
                     case 1:
-                        XOR_cipher_decrypt(compressed, compressed_size);
+                        unsigned char key;
+                        printf("Input key: ");
+                        scanf("%hhu", &key);
+                        XOR_cipher_crypt(compressed, compressed_size, key);
+                        printf("Decryption (XOR) completed.\n");
                         print_pixels("Decrypted first 20: ", compressed, 20);
+                        encryption_method_used = 0;
                         break;
                     case 2:
-                        printf("Second decryption method not yet implemented.\n");
-                        /* second_decrypt(compressed, compressed_size); */
+                        printf("Enter the password used for encryption: ");
+                        scanf("%255s", password);
+                        rc4_key_len = 0;
+                        while (password[rc4_key_len] != '\0') {
+                            rc4_key[rc4_key_len] = (unsigned char)password[rc4_key_len];
+                            rc4_key_len++;
+                        }
+                        rc4_crypt(compressed, compressed_size, rc4_key, rc4_key_len);
+                        encryption_method_used = 0;
+                        printf("Decryption (RC4) completed.\n");
+                        print_pixels("Decrypted first 20: ", compressed, 20);
                         break;
                     default:
                         printf("Unknown encryption method.\n");
