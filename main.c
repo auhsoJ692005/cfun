@@ -44,7 +44,7 @@ unsigned char* read_pgm(const char* filename, int* width, int* height)
  * - return NULL - if failed return nothing. NULL means no valid image.
 ====================================================================================================*/
     if (!fb){
-        fprintf(stderr, "Error! Could not open file: '%s' \n", filename);  /*Could change fpringf output*/
+        fprintf(stderr, "Error! Could not open file: '%s' \n", filename);  
         return NULL;
     }
 
