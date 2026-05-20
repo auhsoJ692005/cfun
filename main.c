@@ -28,8 +28,6 @@ unsigned char* read_pgm(const char* filename, int* width, int* height)
     int got_maxpix = 0;     /*for finding maximum pixel value*/
     size_t pixel_count;            /*Stores number of pixels*/
     unsigned char *pixel_array;    /*Points to where image pixels are stored*/
-    size_t pixel_index;               /*used as a counter. size_t is an unsigned interger type it cannot store negative numbers*/ 
-
 
 /*===================================================================================================
  * - FILE*fb - file pointer to access file
@@ -202,8 +200,9 @@ int write_pgm(const char* filename, unsigned char* pixel_array, int* width, int*
 
 void print_pixels(const char* label, unsigned char* data, int n)
 {
+    int i;
     printf("%s: ", label);
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
         printf("%d ", data[i]);
     }
@@ -239,8 +238,9 @@ int main()
         {
             case 1:
                 /* Read PGM */
+            {
                 char filename[150];
-
+            
                 printf("Enter input image filename: ");
                 scanf("%149s", filename);
 
@@ -259,8 +259,10 @@ int main()
                 printf("Original size %d x %d = %d pixels\n", w, h, size);
 
                 break;
+            }
             case 2:
                 /* Write PGM */
+            {
                 char save_file[150]; /*149 characters can be stored*/
 
                 if (img == NULL){ /*Checks if image was loaded*/
@@ -277,10 +279,11 @@ int main()
                     printf("Error! Image unsucessfully saved.\n");
                 }
                 break;
+            }
             case 3:
                 /* Compress */
                 compressed = malloc(size * 2);
-                compressed_size = compress(img, size, compressed, sizeof(compressed));
+                compressed_size = compress(img, size, compressed, size * 2);
 
                 print_pixels("Compressed first 20: ", compressed, 20);
                 printf("Compressed size: %d\n", compressed_size);
@@ -288,7 +291,7 @@ int main()
             case 4:
                 /* Decompress */
                 decompressed = malloc(size * 2);
-                decompressed_size = decompress(compressed, compressed_size, decompressed, sizeof(decompressed));
+                decompressed_size = decompress(compressed, compressed_size, decompressed, size * 2);
                 print_pixels("Decompressed first 20: ", decompressed, 20);
                 printf("Decompressed size: %d\n", decompressed_size);
                 break;
@@ -298,7 +301,7 @@ int main()
                     printf("Error: No compressed data. Please run compression first (option 3).\n");
                     break;
                 }
-
+            {
                 char confirm;
 
                 if (encryption_method_used != 0) {
@@ -343,7 +346,7 @@ int main()
                         printf("Invalid encryption choice.\n");
                 }
                 break;
-
+            }
             case 6:
                 /* Decrypt – automatically uses the method that was stored */
                 if (compressed == NULL) {
@@ -355,9 +358,9 @@ int main()
                     break;
                 }
 
+                {
                 switch (encryption_method_used) {
                     case 1:
-                        unsigned char key;
                         printf("Input key: ");
                         scanf("%hhu", &key);
                         XOR_cipher_crypt(compressed, compressed_size, key);
@@ -382,6 +385,7 @@ int main()
                         printf("Unknown encryption method.\n");
                 }
                 break;
+                }
             case 7:
                 printf("Thank you for using our service! Have a good day!\n");
                 running = 1;
