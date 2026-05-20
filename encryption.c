@@ -43,15 +43,18 @@ unsigned char key_gen()
     return (rand() % (256));
 }
 
+/* Function only used for debugging
 static void print_decimal(const unsigned char *data, int size)
 {
     int i;
     for (i = 0; i < size; i++)
     {
-        printf("%u ", data[i]);   /* %u treats unsigned char as small integer */
+        printf("%u ", data[i]); 
     }
     printf("\n");
 }
+*/
+
 
 /*
 int main()
