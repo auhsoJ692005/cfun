@@ -37,5 +37,16 @@ Designed for **educational use** – shows low‑level C89 programming, memory m
 
 Compile **all three source files** together:
 
-```bash
 gcc -ansi -Wall -Werror main.c compression.c encryption.c
+
+## Usage
+
+### Running the Program
+
+After compiling, start the program:
+
+./a.out OR ./a.exe (depending on terminal)
+
+### Inputting  a file
+
+The dataset provided under /dataset contains 10 medical scans from the NIH Chest X-ray Dataset. It contains pgm files -- 5 P2 and 5 P5 (in order in folder). The dataset provided is purely for testing and the program goes beyond the test dataset. Inputting files is done using relative file path so ensure to call in the format of "dataset/image.pgm"
